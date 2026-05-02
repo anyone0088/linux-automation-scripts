@@ -1,0 +1,19 @@
+#! /bin/bash
+echo "#############################"
+date
+echo "############################"
+ls  /var/run/apache2/apache2.pid &> /dev/null
+if [ $? -eq 0 ]
+then
+        echo "apache2 process is running "
+else 
+        echo "apache2 process is not running"
+        echo "starting the apache2 running"
+        service apache2 start &> /dev/null
+        if [ $? -eq 0 ]
+        then
+                echo "process is start sucessfully"
+        else 
+                echo "process is failed to start"
+        fi
+fi
