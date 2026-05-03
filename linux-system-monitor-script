@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# ===============================
+# System Resource Check Script
+# ===============================
+
+# Get load average
+Load=$(uptime | awk -F'load average:' '{ print $2 }' | cut -d',' -f1 | xargs)
+
+# Get free disk space of root partition
+Rootfree=$(df -h / | awk 'NR==2 {print $4}')
+
+# Get free RAM in MB
+Free=$(free -m | awk '/Mem:/ {print $4}')
+
+# ===============================
+# Display Output
+# ===============================
+
+echo "=============================="
+echo "   System Status Report"
+echo "=============================="
+echo "Load Average     : $Load"
+echo "Root Free Space  : $Rootfree"
+echo "Free Memory      : ${Free} MB"
+echo "=============================="
