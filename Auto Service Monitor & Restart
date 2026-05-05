@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# ==========================================
+# Auto Service Monitor & Restart Script
+# ==========================================
+
+SERVICE="nginx"   # Change this to any service (apache2, docker, etc.)
+LOG_FILE="service_monitor.log"
+
+echo "=========================================="
+echo "   Service Health Check 🚀"
+echo "=========================================="
+
+# Check if service is running
+if systemctl is-active --quiet $SERVICE
+then
+    echo "$(date) : $SERVICE is running ✅" | tee -a $LOG_FILE
+else
+    echo "$(date) : $SERVICE is NOT running ❌" | tee -a $LOG_FILE
+    echo "Attempting to restart $SERVICE..."
+
+    systemctl restart $SERVICE
+
+    if systemctl is-active --quiet $SERVICE
+    then
+        echo "$(date) : $SERVICE restarted successfully ✅" | tee -a $LOG_FILE
+    else
+        echo "$(date) : Failed to restart $SERVICE ❌" | tee -a $LOG_FILE
+    fi
+fi
+
+echo "=========================================="
